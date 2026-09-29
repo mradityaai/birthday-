@@ -1,0 +1,1 @@
+Add photo1.jpg, photo2.jpg and photo3.jpg here. You can use JPG, PNG, or WebP; if you use another extension, edit CONFIG.photos in index.html.

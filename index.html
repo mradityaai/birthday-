@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>A Little Surprise 💖</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden}
+body{font-family:Georgia,"Times New Roman",serif;background:#08030d;color:#fff}
+#app{height:100%;position:relative;overflow:hidden;background:
+radial-gradient(circle at 50% 35%,#35104b 0,#16071f 35%,#050208 100%)}
+canvas{position:absolute;inset:0;pointer-events:none}
+.scene{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+padding:25px;opacity:0;visibility:hidden;transform:scale(1.04);transition:opacity 1s,transform 1.2s}
+.scene.active{opacity:1;visibility:visible;transform:scale(1)}
+.card{text-align:center;max-width:900px;position:relative;z-index:5}
+.kicker{letter-spacing:5px;text-transform:uppercase;font:12px Arial;color:#ffb8dc}
+h1{font-size:clamp(42px,8vw,92px);margin:15px 0;background:linear-gradient(90deg,#fff,#ffb1da,#fff);
+-webkit-background-clip:text;color:transparent;text-shadow:0 0 35px #ff3f9f55}
+p{font-size:clamp(18px,3vw,26px);line-height:1.6;color:#f7ddea}
+button{border:1px solid #ff9dcc55;background:#ffffff12;color:#fff;border-radius:999px;padding:15px 28px;
+font-size:16px;cursor:pointer;backdrop-filter:blur(10px);transition:.3s}
+button:hover{transform:translateY(-3px);background:#ff4f9f33;box-shadow:0 0 30px #ff4f9f55}
+.gift{width:180px;height:130px;margin:25px auto;position:relative;cursor:pointer;filter:drop-shadow(0 0 30px #ff3c9a88)}
+.box{position:absolute;bottom:0;width:180px;height:105px;background:linear-gradient(135deg,#ff4f9f,#a51668);border-radius:8px}
+.box:after{content:"";position:absolute;left:75px;top:0;width:30px;height:105px;background:#ffd2e9}
+.lid{position:absolute;top:5px;left:-8px;width:196px;height:38px;background:#ff75b5;border-radius:8px;z-index:2}
+.lid:after{content:"";position:absolute;left:83px;top:0;width:30px;height:38px;background:#ffe0ee}
+.bow{position:absolute;z-index:4;top:-20px;left:65px;width:55px;height:45px}
+.bow:before,.bow:after{content:"";position:absolute;width:32px;height:28px;border:7px solid #ffd4e7;border-radius:50% 50% 50% 10%;top:0}
+.bow:before{left:-15px;transform:rotate(25deg)}.bow:after{right:-15px;transform:scaleX(-1) rotate(25deg)}
+.open .lid{animation:openLid 1s forwards}.open .box{animation:boxGlow 1s}
+@keyframes openLid{to{transform:translateY(-100px) rotate(-8deg);opacity:0}}
+@keyframes boxGlow{50%{box-shadow:0 0 80px #ff53a9}}
+.memories{width:min(950px,100%);display:flex;gap:20px;justify-content:center;flex-wrap:wrap}
+.photo{width:200px;height:250px;padding:10px 10px 38px;background:#fff;color:#321527;box-shadow:0 20px 45px #0008;
+transform:rotate(-4deg);animation:float 5s ease-in-out infinite;object-fit:cover}
+.photo:nth-child(2){transform:rotate(4deg);animation-delay:.7s}.photo:nth-child(3){transform:rotate(-2deg);animation-delay:1.2s}
+.photo img{width:100%;height:100%;object-fit:cover}.placeholder{display:flex;align-items:center;justify-content:center;
+background:linear-gradient(135deg,#ffb1d5,#63204c);font-size:18px;text-align:center}
+@keyframes float{50%{transform:translateY(-15px) rotate(0)}}
+.letter{background:#fffafc;color:#35152a;padding:35px 38px;max-width:680px;border-radius:4px;
+box-shadow:0 25px 80px #0009;transform:rotate(-1deg);font-size:20px;line-height:1.8}
+.letter strong{color:#d52879}
+.big{font-size:clamp(55px,12vw,130px);margin:0}.heart{position:absolute;font-size:25px;animation:rise linear forwards;opacity:.8}
+@keyframes rise{from{transform:translateY(20vh) scale(.5);opacity:0}15%{opacity:1}to{transform:translateY(-120vh) scale(1.4);opacity:0}}
+#hint{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);font:11px Arial;letter-spacing:2px;color:#ffffff88}
+</style>
+</head>
+<body>
+<div id="app"><canvas id="fx"></canvas>
+
+<section class="scene active" id="s0"><div class="card">
+<div class="kicker">A tiny surprise, made just for you</div>
+<h1>Hey, <span id="name">Beautiful</span> 💗</h1>
+<p>There is something waiting for you...</p>
+<div class="gift" id="gift"><div class="bow"></div><div class="lid"></div><div class="box"></div></div>
+<button onclick="openGift()">Open your present 🎁</button>
+</div></section>
+
+<section class="scene" id="s1"><div class="card">
+<div class="kicker">Chapter One</div><h1>Some moments deserve to stay forever ✨</h1>
+<div class="memories" id="memories"></div>
+<p>And somehow, you make ordinary moments feel special.</p>
+<button onclick="next()">Keep going →</button>
+</div></section>
+
+<section class="scene" id="s2"><div class="card">
+<div class="kicker">A little letter</div>
+<div class="letter">
+Dear <strong id="letterName">you</strong>,<br><br>
+If I could give you one thing today, it would be the ability to see yourself
+through my eyes — because then you'd understand just how wonderful you are.
+<br><br>
+Thank you for the smiles, the memories, the little conversations, and all the
+moments that somehow became my favorite ones.
+<br><br>
+I hope this birthday gives you a hundred reasons to smile. ❤️
+</div><br><button onclick="next()">One last surprise ✨</button>
+</div></section>
+
+<section class="scene" id="s3"><div class="card">
+<div class="kicker">Today is about you</div>
+<div class="big">🎂</div>
+<h1>Happy Birthday,<br><span id="finalName">Beautiful</span>! 💖</h1>
+<p>May your life be filled with beautiful days, crazy laughter,<br>
+wonderful people and dreams that come true.</p>
+<h2 style="font-weight:normal;color:#ffacd4">You deserve all the happiness in the world. ✨</h2>
+<button onclick="replay()">Replay the magic ↻</button>
+</div></section>
+<div id="hint">TURN UP THE SOUND • CLICK TO CONTINUE</div>
+</div>
+<script>
+/* ===== EASY CUSTOMIZATION ===== */
+const CONFIG={
+  name:"Beautiful",                 // Change this
+  photos:["photos/photo1.jpg","photos/photo2.jpg","photos/photo3.jpg"],
+  music:""                          // Optional: "music.mp3"
+};
+/* =============================== */
+document.querySelectorAll("#name,#letterName,#finalName").forEach(e=>e.textContent=CONFIG.name);
+const memories=document.getElementById("memories");
+CONFIG.photos.forEach((src,i)=>{
+ const frame=document.createElement("div"); frame.className="photo";
+ const img=document.createElement("img"); img.src=src;
+ img.onerror=()=>{frame.classList.add("placeholder");frame.innerHTML="📷<br><br>Add your photo here";};
+ frame.appendChild(img); memories.appendChild(frame);
+});
+let current=0;
+function show(n){
+ document.querySelectorAll(".scene").forEach(s=>s.classList.remove("active"));
+ document.getElementById("s"+n).classList.add("active");current=n;
+}
+function next(){if(current<3)show(current+1)}
+function openGift(){
+ document.getElementById("gift").classList.add("open");
+ burst();
+ setTimeout(()=>show(1),1100);
+}
+function replay(){show(0);document.getElementById("gift").classList.remove("open")}
+setInterval(()=>{
+ const h=document.createElement("div");h.className="heart";h.textContent=["♥","♡","✦","✨"][Math.floor(Math.random()*4)];
+ h.style.left=Math.random()*100+"vw";h.style.bottom="-30px";h.style.animationDuration=(4+Math.random()*5)+"s";
+ document.getElementById("app").appendChild(h);setTimeout(()=>h.remove(),9000);
+},450);
+
+const c=document.getElementById("fx"),ctx=c.getContext("2d");let W,H,parts=[];
+function resize(){W=c.width=innerWidth;H=c.height=innerHeight}resize();addEventListener("resize",resize);
+function burst(){
+ for(let i=0;i<160;i++)parts.push({x:W/2,y:H/2,vx:(Math.random()-.5)*12,vy:(Math.random()-.8)*13,
+ r:2+Math.random()*5,a:1,g:0.25+Math.random()*.3});
+}
+function animate(){
+ ctx.clearRect(0,0,W,H);
+ parts=parts.filter(p=>p.a>0);
+ for(const p of parts){p.x+=p.vx;p.y+=p.vy;p.vy+=.25;p.a-=.012;
+  ctx.globalAlpha=p.a;ctx.font=p.r*4+"px Arial";ctx.fillText(Math.random()>.5?"✦":"♥",p.x,p.y)}
+ ctx.globalAlpha=1;requestAnimationFrame(animate)
+}animate();
+if(CONFIG.music){
+ const audio=new Audio(CONFIG.music);audio.loop=true;
+ document.addEventListener("click",()=>audio.play().catch(()=>{}),{once:true});
+}
+</script></body></html>
